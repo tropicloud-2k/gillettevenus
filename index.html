@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <title>Gillette Venus</title>
-  <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/TweenMax.min.js"></script>
   <script src="assets/js/MorphSVGPlugin.min.js"></script>
   <style media="screen">
@@ -12,15 +11,9 @@
       margin: 0;
       background: #f2f2f2;
     }
-    #banner {
-      position: relative;
-      overflow: hidden;
-      margin: 0 auto;
-      width: 300px;
-      height: 250px;
-    }
-    #click {
+    .venus {
       position: absolute;
+      overflow: hidden;
       top: 0;
       left: 0;
       width: 300px;
@@ -32,7 +25,6 @@
       stroke-width:1;
       stroke-miterlimit:10;
     }
-    .mask { position: absolute; }
     .ice0 { clip-path: url(#clip0); }
     .ice1 { clip-path: url(#clip1); }
     .ice2 { clip-path: url(#clip2); }
@@ -41,19 +33,7 @@
 </head>
 <body>
 
-  <!-- remember old times,
-  now let's have some fun! -->
-
-  <svg class="mask">
-    <defs>
-      <clipPath id="clip0"><rect id="mask0" x="0" y="0" width="300" height="250" /></clipPath>
-      <clipPath id="clip1"><rect id="mask1" x="0" y="0" width="300" height="250" /></clipPath>
-      <clipPath id="clip2"><rect id="mask2" x="0" y="0" width="300" height="250" /></clipPath>
-      <clipPath id="clip3"><rect id="mask3" x="0" y="0" width="300" height="250" /></clipPath>
-    </defs>
-  </svg>
-
-  <div id="banner">
+  <div class="venus">
     <svg width="300px" height="250px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink">
 
       <!-- paths -->
@@ -72,7 +52,7 @@
       <image class="ice3" xlink:href="assets/img/ice3.png" x="0" y="0" width="300" height="250" />
 
       <!-- razor + cta + logo -->
-      <image id="razor" xlink:href="assets/img/razor.png" x="-130" y="0" width="214" height="569" />
+      <image id="razor" xlink:href="assets/img/razor.png" x="-214" y="0" width="214" height="569" />
       <image xlink:href="assets/img/cta.png" x="0" y="0" width="300" height="250" />
       <image xlink:href="assets/img/logo.png" x="0" y="0" width="300" height="250" />
 
@@ -81,48 +61,53 @@
     </svg>
 
     <!-- click overlay -->
-    <a id="click" href="http://www.gillettevenus.com/en-us" target="_blank"></a>
+    <a class="venus" href="http://www.gillettevenus.com/en-us" target="_blank"></a>
   </div>
 
+  <svg class="mask" width="300px" height="250px">
+    <defs>
+      <clipPath id="clip0"><rect id="mask0" x="0" y="0" width="300" height="250" /></clipPath>
+      <clipPath id="clip1"><rect id="mask1" x="0" y="0" width="300" height="250" /></clipPath>
+      <clipPath id="clip2"><rect id="mask2" x="0" y="0" width="300" height="250" /></clipPath>
+      <clipPath id="clip3"><rect id="mask3" x="0" y="0" width="300" height="250" /></clipPath>
+    </defs>
+  </svg>
+
   <script type="text/javascript">
-    var tl = new TimelineMax();
+    var tl = new TimelineMax({paused: true});
     var pathOne = MorphSVGPlugin.pathDataToBezier("#path1", {align: "relative"});
     var pathTwo = MorphSVGPlugin.pathDataToBezier("#path2", {align: "relative"});
 
-    // first tween
+    // path position
     tl.set(".path", {x: -100});
-    tl.set("#razor", {css: {scaleX: .7, scaleY: .7}});
-    tl.to ("#razor", 1, {delay: 1, css: {rotation: -180}}, 'one');
-    tl.to ("#razor", 1, {delay: 1, bezier: {values: pathOne, type: "soft"}}, 'one');
-    tl.to ("#mask1", .5, {delay: 1, attr: {width: 0, x: 300}}, 'one');
+
+    // first tween
+    tl.set("#razor", {scaleX: .7, scaleY: .7, x: 80});
+    tl.to("#razor", 1, {delay: 1, rotation: -180, bezier: {values: pathOne, type: "soft"}}, "one");
+    tl.to("#mask1", .5, {delay: 1, attr: {width: 0, x: 300}}, "one");
 
     // second tween
-    tl.set("#razor", {yPercent: -10});
-    tl.set("#razor", {css: {rotation: -90}});
-    tl.to ("#razor", 1.5, {delay: 0, css: {rotation: 180}}, 'two');
-    tl.to ("#razor", 1.5, {delay: 0, bezier: {values: pathTwo, type: "soft"}}, 'two');
-    tl.to ("#mask2", .4, {delay: .3, attr: {width: 0 }}, 'two');
+    tl.set("#razor", {yPercent: -10, rotation: -90});
+    tl.to("#razor", 1.5, {delay: 0, rotation: 180, bezier: {values: pathTwo, type: "soft"}}, "two");
+    tl.to("#mask2", .4, {delay: .3, attr: {width: 0 }}, "two");
 
     // third tween
-    tl.set("#razor", {yPercent: -5});
-    tl.set("#razor", {css: {rotation: -90}});
-    tl.to ("#razor", 1.5, {delay: 0, css: {rotation: -180}}, 'three');
-    tl.to ("#razor", 1.5, {delay: 0, bezier: {values: pathOne, type: "soft"}}, 'three');
-    tl.to ("#mask0", .5, { delay: .3, attr: {width: 0, x: 300 }}, 'three');
+    tl.set("#razor", {yPercent: -5, rotation: -90});
+    tl.to("#razor", 1.5, {delay: 0, rotation: -180, bezier: {values: pathOne, type: "soft"}}, "three");
+    tl.to("#mask0", .5, { delay: .3, attr: {width: 0, x: 300 }}, "three");
 
     // fourth tween
-    tl.set("#razor", {yPercent: 10});
-    tl.set("#razor", {css: {rotation: 90}});
-    tl.to ("#razor", 2, {delay: 0, css: {rotation: 180}}, 'four');
-    tl.to ("#razor", 2, {delay: 0, bezier: {values: pathTwo, type: "soft"}}, 'four');
-    tl.to ("#mask3", .5, {delay: .3, attr: {width: 0}}, 'four');
+    tl.set("#razor", {yPercent: 10, rotation: 90});
+    tl.to("#razor", 2, {delay: 0, rotation: 180, bezier: {values: pathTwo, type: "soft"}}, "four");
+    tl.to("#mask3", .5, {delay: .2, attr: {width: 0}}, "four");
 
     // final tween
-    tl.to("#razorEnding", .5, {xPercent: 105, ease: Back.easeOut.config(2)});
+    tl.to("#razorEnding", .5, {xPercent: 105, ease: Back.easeOut});
+
+    // 1, 2, 3... go!
+    window.onload = function() {
+      tl.play();
+    }
   </script>
-
-  <!-- that's all folks,
-  thank you very much :) -->
-
 </body>
 </html>
